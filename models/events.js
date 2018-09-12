@@ -3,9 +3,9 @@ module.exports = function(sequelize, DataTypes) {
     eventName: DataTypes.STRING,
     eventDescription: DataTypes.STRING,
     eventType: DataTypes.STRING,
-    eventAuthor: DataTypes.STRING,
+    //eventAuthor: DataTypes.STRING,
     eventLocation: DataTypes.STRING,
-    eventComments: DataTypes.STRING
+    //eventComments: DataTypes.STRING
   });
 
   // Events.associate = function(models) {

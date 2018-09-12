@@ -105,6 +105,8 @@ $exampleList.on("click", ".delete", handleDeleteBtnClick);
 // Get references to page elements
 var $eventName = $("#event-name");
 var $eventDescription = $("#event-description");
+var $eventType = $("#event-type");
+var $eventLocation = $("#event-location");
 var $submitEvt = $("#submit-event");
 var $eventsList = $("#events-list");
 
@@ -164,15 +166,17 @@ var refreshEvents = function() {
 
 // handleFormSubmit is called whenever we submit a new example
 // Save the new example to the db and refresh the list
-var handleFormSubmitEvents = function(events) {
-  events.preventDefault();
+var handleFormSubmitEvents = function(event) {
+  event.preventDefault();
 
   var events = {
-    text: $eventName.val().trim(),
-    description: $eventDescription.val().trim()
+    eventName: $eventName.val().trim(),
+    eventDescription: $eventDescription.val().trim(),
+    eventLocation: $eventLocation.val().trim(),
+    eventType: $eventType.val().trim()
   };
 
-  if (!(events.text && events.description)) {
+  if (!(events.eventName && events.eventLocation && events.eventType)) {
     alert("You must enter an example text and description!");
     return;
   }
@@ -182,17 +186,19 @@ var handleFormSubmitEvents = function(events) {
   });
 
   $eventName.val("");
+  $eventType.val("");
   $eventDescription.val("");
+  $eventLocation.val("");
 };
 
 // handleDeleteBtnClick is called when an example's delete button is clicked
 // Remove the example from the db and refresh the list
 var handleDeleteBtnClickEvents = function() {
-  var idToDelete = $(this)
+  var idToDelete2 = $(this)
     .parent()
     .attr("data-id");
 
-  API2.deleteEvents(idToDelete).then(function() {
+  API2.deleteEvents(idToDelete2).then(function() {
     refreshEvents();
   });
 };
