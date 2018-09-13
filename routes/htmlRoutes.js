@@ -19,6 +19,23 @@ module.exports = function(app) {
       });
     });
   });
+
+  app.get("/cms", function(req, res) {
+    db.Events.findAll({}).then(function(dbCms) {
+      res.render("cms", {
+        events: dbCms
+      });
+    });
+  });
+
+
+  app.get("/authors", function(req, res) {
+    db.Events.findAll({}).then(function(dbCms) {
+      res.render("authors", {
+        events: dbCms
+      });
+    });
+  });  
   
   // app.get("/dashboard/:id", function(req, res) {
   //   db.Example.findOne({ where: { id: req.params.id } }).then(function(dbDash) {
