@@ -13,9 +13,9 @@ module.exports = function(app) {
 
   // Load Users page and pass in an example by id
   app.get("/dashboard", function(req, res) {
-    db.Events.findAll({}).then(function(dbDash) {
+    db.Events.findAll({}).then(function(dbEvents) {
       res.render("dashboard", {
-        events: dbDash
+        Events: dbEvents
       });
     });
   });
