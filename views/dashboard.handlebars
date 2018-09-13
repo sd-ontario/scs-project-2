@@ -1,13 +1,11 @@
 <div id="dashboard">
   <div class="container">
     <div class="row">
-      <div class="col-8 offset-2">
+      <div class="col-12">
         <h2>Dashboard</h2>
-
       <div class="col-md-2 col-sm-2">
         <a class="btn btn-default" href="/cms">New Post</a>
       </div>       
-
         <br/>
         <div class="col-lg-6">
             <div>
@@ -35,12 +33,17 @@
           <button id="submit-event" class="btn btn-primary float-right">Submit</button>
         </form>
         </div>
-
+        </div>
         <h3>Events:</h3>
         <ul id="events-list" class="list-group">
-          {{#each events}}
+          {{#each eventList}}
           <li data-id="{{this.id}}" class="list-group-item">
-            <a href="Events/{{this.id}}">{{this.text}}</a>
+            <a href="events/{{this.id}}">
+            {{this.eventName}}
+            {{!-- <p>{{this.eventType}}</p><br/><br/>
+            <p>{{this.eventDescription}}</p><br/><br/>
+            <p>{{this.eventLocation}}</p><br/><br/> --}}
+            </a>
             <button class="btn btn-danger float-right delete">ｘ</button>
           </li>
           {{/each}}

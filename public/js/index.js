@@ -112,14 +112,14 @@ var $eventsList = $("#events-list");
 
 // The API object contains methods for each kind of request we'll make
 var API2 = {
-  saveEvents: function(events) {
+  saveEvents: function(Events) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
       },
       type: "POST",
       url: "api/Events",
-      data: JSON.stringify(events)
+      data: JSON.stringify(Events)
     });
   },
   getEvents: function() {
@@ -138,15 +138,15 @@ var API2 = {
 // refreshEvents gets new events from the db and repopulates the list
 var refreshEvents = function() {
   API2.getEvents().then(function(data) {
-    var $events = data.map(function(events) {
+    var $events = data.map(function(Events) {
       var $a = $("<a>")
-        .text(events.text)
-        .attr("href", "/Events/" + events.id);
+        .text(Events.eventName + Events.eventDescription + Events.eventLocation + Events.eventType)
+        .attr("href", "/Events/" + Events.id);
 
       var $li = $("<li>")
         .attr({
           class: "list-group-item",
-          "data-id": events.id
+          "data-id": Events.id
         })
         .append($a);
 
@@ -169,19 +169,19 @@ var refreshEvents = function() {
 var handleFormSubmitEvents = function(event) {
   event.preventDefault();
 
-  var events = {
+  var eventList = {
     eventName: $eventName.val().trim(),
     eventDescription: $eventDescription.val().trim(),
     eventLocation: $eventLocation.val().trim(),
     eventType: $eventType.val().trim()
   };
 
-  if (!(events.eventName && events.eventLocation && events.eventType)) {
+  if (!(eventList.eventName && eventList.eventLocation && eventList.eventType)) {
     alert("You must enter an example text and description!");
     return;
   }
 
-  API2.saveEvents(events).then(function() {
+  API2.saveEvents(eventList).then(function() {
     refreshEvents();
   });
 
