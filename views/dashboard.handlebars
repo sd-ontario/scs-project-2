@@ -1,57 +1,73 @@
 <div id="dashboard">
   <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <h2>Dashboard</h2>
+    <div class="col-12">
+      <h2>Dashboard</h2>
+    </div>
+    <div class="row container">
       <div class="col-md-2 col-sm-2">
         <a class="btn btn-default" href="/cms">New Post</a>
       </div>       
         <br/>
-        <div class="col-lg-6">
-            <div>
-                GOOGLE MAPS API
+    </div>
+    <div id="map" ></div>
+    <div class="row">
+    <div class="col-lg-3 offset-3">
+      <button id="addEventBtn">Add an Event</button>
+      <!-- The Modal -->
+      <div id="addEventModal">
+        <!-- Modal content -->
+        <div class="modal-content col-lg-3">
+          <span id="addEventClose">&times;</span>
+          <form class="clearfix mb-4" action="POST">
+            <div class="form-group">
+              <label for="event-name">New Event</label>
+              <input type="text" id="event-name" class="form-control" aria-describedby="event-name" placeholder="Enter New Event">
             </div>
+            <div class="form-group">
+              <label for="event-type">Event Type</label>
+              <input class="form-control" id="event-type" aria-describedby="event-type" placeholder="Enter Event Type">
+            </div>
+            <div class="form-group">
+              <label for="event-description">Event Description</label>
+              <textarea class="form-control" id="event-description" aria-describedby="event-description" placeholder="Enter Event Description"></textarea>
+            </div>    
+            <div class="form-group">
+              <label for="event-location">Event Location</label>
+              <input class="form-control" id="event-location" aria-describedby="event-location" placeholder="Enter Event Location">
+            </div>
+            <button id="submit-event" class="btn btn-primary float-right">Submit</button>
+          </form>
         </div>
-        <div class="col-lg-6">
-        <form class="clearfix mb-4" action="POST">
-          <div class="form-group">
-            <label for="event-name">New Event</label>
-            <input type="text" id="event-name" class="form-control" aria-describedby="event-name" placeholder="Enter New Event">
-          </div>
-          <div class="form-group">
-            <label for="event-type">Event Type</label>
-            <input class="form-control" id="event-type" aria-describedby="event-type" placeholder="Enter Event Type"></input>
-          </div>
-          <div class="form-group">
-            <label for="event-description">Event Description</label>
-            <textarea class="form-control" id="event-description" aria-describedby="event-description" placeholder="Enter Event Description"></textarea>
-          </div>    
-          <div class="form-group">
-            <label for="event-location">Event Location</label>
-            <input class="form-control" id="event-location" aria-describedby="event-location" placeholder="Enter Event Location"></input>
-          </div>
-          <button id="submit-event" class="btn btn-primary float-right">Submit</button>
-        </form>
-        </div>
-        </div>
-        <h3>Events:</h3>
-        <ul id="events-list" class="list-group">
-          {{#each eventList}}
-          <li data-id="{{this.id}}" class="list-group-item">
-            <a href="events/{{this.id}}">
-            {{this.eventName}}
-            {{!-- <p>{{this.eventType}}</p><br/><br/>
-            <p>{{this.eventDescription}}</p><br/><br/>
-            <p>{{this.eventLocation}}</p><br/><br/> --}}
-            </a>
-            <button class="btn btn-danger float-right delete">ｘ</button>
-          </li>
-          {{/each}}
-        </ul>
       </div>
+    </div>
+    <div class="col-lg-3">
+      <!-- Trigger/Open The Modal -->
+      <button id="allEventsBtn">View All Current Events</button>
+      <!-- The Modal -->
+        <div id="allEventsModal" class="modal">
+        <!-- Modal content -->
+          <div class="modal-content col-lg-4">
+          <span id="allEventsClose">&times;</span>
+            <ul id="events-list" class="list-group">
+              {{#each Events}}
+              <li data-id="{{this.id}}" class="list-group-item">
+                <p>{{this.eventName}}</p>
+                <p>{{this.eventType}}</p>
+                <p>{{this.eventDescription}}</p>
+                <p>{{this.eventLocation}}</p>
+                <button class="btn btn-danger float-right delete">ｘ</button>
+              </li>
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+    </div>
     </div>
   </div>
 </div>
 
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="/js/index.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC83gYW2lRHk0-0EYyDuaC-NXsDWarTXEI&callback=myMap"></script>
+

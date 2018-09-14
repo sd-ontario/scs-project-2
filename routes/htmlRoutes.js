@@ -28,22 +28,21 @@ module.exports = function(app) {
     });
   });
 
-
   app.get("/authors", function(req, res) {
     db.Events.findAll({}).then(function(dbCms) {
       res.render("authors", {
         events: dbCms
       });
     });
-  });  
-  
-  // app.get("/dashboard/:id", function(req, res) {
-  //   db.Example.findOne({ where: { id: req.params.id } }).then(function(dbDash) {
-  //     res.render("dashboard", {
-  //       example: dbDash
-  //     });
-  //   });
-  // });
+  });
+
+  app.get("/events/:id", function(req, res) {
+    db.Events.findOne({ where: { id: req.params.id } }).then(function(dbDash) {
+      res.render("events", {
+        event: dbDash
+      });
+    });
+  });
 
   // Render 404 page for any unmatched routes
   app.get("*", function(req, res) {
