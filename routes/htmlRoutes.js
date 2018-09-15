@@ -1,3 +1,5 @@
+const path = require("path");
+const router = require('express');
 var db = require("../models");
 
 module.exports = function(app) {
@@ -12,30 +14,43 @@ module.exports = function(app) {
   });
 
   // Load Users page and pass in an example by id
-  app.get("/dashboard", function(req, res) {
-    db.Events.findAll({}).then(function(dbDash) {
+
+var renderEvents = function(req, res, next) {
+    db.Events.findAll({}).then(function(dbEvents) {
       res.render("dashboard", {
-        events: dbDash
+        Events: dbEvents
       });
     });
+    next()
+  };
+
+var renderBlog = function renderBlog(req, res) {
+  var query = {};
+  if (req.query.author_id) {
+    query.AuthorId = req.query.author_id;
+  }
+  db.Post.findAll({
+    where: query,
+    include: [db.Author]
+  }).then(function (posts) {
+    res.render('dashboard', { posts: posts })
   });
-
-  app.get("/cms", function(req, res) {
-    db.Events.findAll({}).then(function(dbCms) {
-      res.render("cms", {
-        events: dbCms
-      });
-    });
-  });
+}  
 
 
-  app.get("/authors", function(req, res) {
-    db.Events.findAll({}).then(function(dbCms) {
-      res.render("authors", {
-        events: dbCms
-      });
-    });
-  });  
+
+  app.get("/dashboard", [renderEvents, renderBlog])
+
+
+// cms route loads cms.html
+app.get("/cms", function (req, res) {
+  res.render('cms');
+});
+
+app.get("/authors", function (req, res) {
+  res.render('authors');
+});
+
   
   // app.get("/dashboard/:id", function(req, res) {
   //   db.Example.findOne({ where: { id: req.params.id } }).then(function(dbDash) {
@@ -45,6 +60,26 @@ module.exports = function(app) {
   //   });
   // });
 
+    app.get("/authors", function(req, res) {
+    db.Events.findAll({}).then(function(dbCms) {
+      res.render("authors", {
+        events: dbCms
+      });
+    });
+  });
+
+  app.get("/events/:id", function(req, res) {
+    db.Events.findOne({ where: { id: req.params.id } }).then(function(dbDash) {
+      res.render("events", {
+        event: dbDash
+      });
+    });
+  });
+  
+  
+  
+  
+  
   // Render 404 page for any unmatched routes
   app.get("*", function(req, res) {
     res.render("404");
