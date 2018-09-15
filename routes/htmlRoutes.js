@@ -29,7 +29,7 @@ var renderBlog = function renderBlog(req, res) {
   if (req.query.author_id) {
     query.AuthorId = req.query.author_id;
   }
-  db.Post.findAll({
+  db.Users.findAll({
     where: query,
     include: [db.Author]
   }).then(function (posts) {

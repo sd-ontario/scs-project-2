@@ -190,6 +190,8 @@ var handleFormSubmitEvents = function(event) {
   $eventType.val("");
   $eventDescription.val("");
   $eventLocation.val("");
+
+  addEventModal.style.display = "none";
 };
 
 // handleDeleteBtnClick is called when an example's delete button is clicked
@@ -258,9 +260,13 @@ function myMap() {
   var myCenter= new google.maps.LatLng(lat, long);
   var mapOptions = {center: myCenter, zoom: 5};
   var map = new google.maps.Map(mapCanvas, mapOptions);
-  google.maps.event.addListener(map, 'click', function(event) {
-    placeMarker(map, event.latLng);
-  });
+  //google.maps.event.addListener($submitEvt, 'click', function() {
+    var eventLocation = {lat: -34.397, lng: 150.644};
+    $submitEvt.on("click",function(){
+      placeMarker(map, eventLocation);  
+    });
+    //placeMarker(map, (51.508742, -.0120850));
+  //});
 }
 
 function placeMarker(map, location) {
@@ -269,7 +275,7 @@ function placeMarker(map, location) {
     map: map
   });
   var infowindow = new google.maps.InfoWindow({
-    content: 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()
+    //content: 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()
   });
   infowindow.open(map,marker);
 }
