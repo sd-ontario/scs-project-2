@@ -13,43 +13,37 @@ module.exports = function(app) {
     });
   });
 
-  // Load Users page and pass in an example by id
 
-var renderEvents = function(req, res, next) {
+  app.get("/dashboard", function(req, res) {
     db.Events.findAll({}).then(function(dbEvents) {
       res.render("dashboard", {
         Events: dbEvents
       });
     });
-    next()
-  };
-
-var renderBlog = function renderBlog(req, res) {
-  var query = {};
-  if (req.query.author_id) {
-    query.AuthorId = req.query.author_id;
-  }
-  db.Users.findAll({
-    where: query,
-    include: [db.Author]
-  }).then(function (posts) {
-    res.render('dashboard', { posts: posts })
   });
-}  
 
-
-
-  app.get("/dashboard", [renderEvents, renderBlog])
-
-
-// cms route loads cms.html
-app.get("/cms", function (req, res) {
-  res.render('cms');
-});
-
-app.get("/authors", function (req, res) {
-  res.render('authors');
-});
+/* Waiting for sign-up/profile page */
+//var renderEvents = function(req, res, next) {
+//     db.Events.findAll({}).then(function(dbEvents) {
+//       res.render("dashboard", {
+//         Events: dbEvents
+//       });
+//     });
+//     next()
+//   };
+// var renderBlog = function renderBlog(req, res) {
+//   var query = {};
+//   if (req.query.author_id) {
+//     query.AuthorId = req.query.author_id;
+//   }
+//   db.Users.findAll({
+//     where: query,
+//     include: [db.Author]
+//   }).then(function (posts) {
+//     res.render('dashboard', { posts: posts })
+//   });
+// }  
+//   app.get("/dashboard", [renderEvents, renderBlog])
 
   
   // app.get("/dashboard/:id", function(req, res) {
