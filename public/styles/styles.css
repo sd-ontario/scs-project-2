@@ -1,3 +1,64 @@
 .list-group-item {
   line-height: 2.5;
 }
+.list-group > li{
+  margin-bottom: 20px !important;
+}
+body {font-family: Arial, Helvetica, sans-serif;}
+/* The Modal (background) */
+#addEventModal,
+#allEventsModel {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    height: 600px;
+    position: relative;
+    overflow-y: scroll;
+    }
+
+/* The Close Button */
+#addEventClose,
+#allEventsClose {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+#addEventClose:hover,
+#addEventClose:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+#allEventsClose:hover,
+#allEventsClose:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.list-group-item > p {
+  margin-bottom: -15px;
+}
+
+#map {
+  height: 400px;
+  width:100%;
+  margin: 20px;
+}

@@ -38,6 +38,7 @@ var renderBlog = function renderBlog(req, res) {
 }  
 
 
+
   app.get("/dashboard", [renderEvents, renderBlog])
 
 
@@ -59,6 +60,26 @@ app.get("/authors", function (req, res) {
   //   });
   // });
 
+    app.get("/authors", function(req, res) {
+    db.Events.findAll({}).then(function(dbCms) {
+      res.render("authors", {
+        events: dbCms
+      });
+    });
+  });
+
+  app.get("/events/:id", function(req, res) {
+    db.Events.findOne({ where: { id: req.params.id } }).then(function(dbDash) {
+      res.render("events", {
+        event: dbDash
+      });
+    });
+  });
+  
+  
+  
+  
+  
   // Render 404 page for any unmatched routes
   app.get("*", function(req, res) {
     res.render("404");

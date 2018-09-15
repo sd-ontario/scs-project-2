@@ -97,9 +97,6 @@ var handleDeleteBtnClick = function() {
 $submitBtn.on("click", handleFormSubmit);
 $exampleList.on("click", ".delete", handleDeleteBtnClick);
 
-
-
-
 //CODE FOR EVENTS PART OF DASHBOARD
 
 // Get references to page elements
@@ -139,16 +136,18 @@ var API2 = {
 var refreshEvents = function() {
   API2.getEvents().then(function(data) {
     var $events = data.map(function(Events) {
-      var $a = $("<a>")
-        .text(Events.eventName + Events.eventDescription + Events.eventLocation + Events.eventType)
-        .attr("href", "/Events/" + Events.id);
+      var $pOne = $("<p>").text("Event: " + Events.eventName);
+      var $pTwo = $("<p>").text("Type: " + Events.eventType);
+      var $pThree = $("<p>").text("Description: " + Events.eventDescription);
+      var $pFour = $("<p>").text("Location: " + Events.eventLocation);
+      //.attr("href", "/Events/" + Events.id);
 
       var $li = $("<li>")
         .attr({
           class: "list-group-item",
           "data-id": Events.id
         })
-        .append($a);
+        .append($pOne, $pTwo, $pThree, $pFour);
 
       var $button = $("<button>")
         .addClass("btn btn-danger float-right delete")
@@ -176,7 +175,9 @@ var handleFormSubmitEvents = function(event) {
     eventType: $eventType.val().trim()
   };
 
-  if (!(eventList.eventName && eventList.eventLocation && eventList.eventType)) {
+  if (
+    !(eventList.eventName && eventList.eventLocation && eventList.eventType)
+  ) {
     alert("You must enter an example text and description!");
     return;
   }
@@ -206,3 +207,71 @@ var handleDeleteBtnClickEvents = function() {
 // Add event listeners to the submit and delete buttons
 $submitEvt.on("click", handleFormSubmitEvents);
 $eventsList.on("click", ".delete", handleDeleteBtnClickEvents);
+
+// New Events Form Modal
+var addEventModal = document.getElementById("addEventModal");
+// Get the button that opens the modal
+var addEventBtn = document.getElementById("addEventBtn");
+// Get the <span> element that closes the modal
+var addEventSpan = document.getElementById("addEventClose");
+// When the user clicks the button, open the modal
+addEventBtn.onclick = function() {
+  addEventModal.style.display = "block";
+};
+// When the user clicks on <span> (x), close the modal
+addEventSpan.onclick = function() {
+  addEventModal.style.display = "none";
+};
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target === addEventModal) {
+    addEventModal.style.display = "none";
+  }
+};
+
+//All Events Modal
+var allEventsModal = document.getElementById("allEventsModal");
+// Get the button that opens the modal
+var allEventsBtn = document.getElementById("allEventsBtn");
+// Get the <span> element that closes the modal
+var allEventsSpan = document.getElementById("allEventsClose");
+// When the user clicks the button, open the modal
+allEventsBtn.onclick = function() {
+  allEventsModal.style.display = "block";
+};
+// When the user clicks on <span> (x), close the modal
+allEventsSpan.onclick = function() {
+  allEventsModal.style.display = "none";
+};
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target === allEventsModal) {
+    allEventsModal.style.display = "none";
+  }
+};
+
+let lat = 51.508742;
+let long = -.0120850;
+
+function myMap() {
+  var mapCanvas = document.getElementById("map");
+  var myCenter= new google.maps.LatLng(lat, long);
+  var mapOptions = {center: myCenter, zoom: 5};
+  var map = new google.maps.Map(mapCanvas, mapOptions);
+  google.maps.event.addListener(map, 'click', function(event) {
+    placeMarker(map, event.latLng);
+  });
+}
+
+function placeMarker(map, location) {
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map
+  });
+  var infowindow = new google.maps.InfoWindow({
+    content: 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()
+  });
+  infowindow.open(map,marker);
+}
+
+
