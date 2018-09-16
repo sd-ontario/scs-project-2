@@ -62,4 +62,25 @@ module.exports = function(app) {
       res.json(dbEvents);
     });
   });
+
+  //Get all Posts
+  app.get("/api/Posts", function(req, res) {
+    db.Posts.findAll({}).then(function(dbPosts) {
+      res.json(dbPosts);
+    });
+  });
+  // Create a new Event
+  app.post("/api/Posts", function(req, res) {
+    db.Posts.create(req.body).then(function(dbPosts) {
+      res.json(dbPosts);
+    });
+  });
+  // Delete an Event by id
+  app.delete("/api/Posts/:id", function(req, res) {
+    db.Posts.destroy({ where: { id: req.params.id } }).then(function(dbPosts) {
+      res.json(dbPosts);
+    });
+  });
+
+
 };

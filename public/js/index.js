@@ -102,6 +102,11 @@ var handleDeleteBtnClick = function() {
 $submitBtn.on("click", handleFormSubmit);
 $exampleList.on("click", ".delete", handleDeleteBtnClick);
 
+
+
+
+
+
 //CODE FOR EVENTS PART OF DASHBOARD
 
 // Get references to page elements
@@ -186,7 +191,7 @@ var handleFormSubmitEvents = function(event) {
   if (
     !(eventList.eventName && eventList.eventLocation && eventList.eventType)
   ) {
-    alert("You must enter an example text and description!");
+    alert("Please complete all fields.");
     return;
   }
 
@@ -347,3 +352,131 @@ function initAutocomplete() {
           }
       });
   });
+
+
+
+
+/*** Code for POSTS in DASHBOARD ***/
+
+
+// Get references to page elements
+var $postTitle = $("#post-title");
+var $postBody = $("#post-body");
+var $submitPost = $("#submit-post");
+var $postList = $("#post-list");
+
+// The API object contains methods for each kind of request we'll make
+var API3 = {
+  savePosts: function(Posts) {
+    return $.ajax({
+      headers: {
+        "Content-Type": "application/json"
+      },
+      type: "POST",
+      url: "api/Posts",
+      data: JSON.stringify(Posts)
+    });
+  },
+  getPosts: function() {
+    return $.ajax({
+      url: "api/Posts",
+      type: "GET"
+    });
+  },
+  deletePosts: function(id) {
+    return $.ajax({
+      url: "api/Posts/" + id,
+      type: "DELETE"
+    });
+  }
+};
+
+
+// refreshPosts gets new posts from the db and repopulates the list
+var refreshPosts = function() {
+  API3.getPosts().then(function(data) {
+    var $posts = data.map(function(Posts) {
+      var $titleP = $("<p>").text("Title: " + Posts.postTitle);
+      var $bodyP = $("<p>").text("Body: " + Posts.postBody);
+
+      var $li = $("<li>")
+        .attr({
+          class: "list-group-item",
+          "data-id": Posts.id
+        })
+        .append($titleP, $bodyP);
+
+      var $button = $("<button>")
+        .addClass("btn btn-danger float-right delete")
+        .text("ｘ");
+
+      $li.append($button);
+
+      return $li;
+    });
+
+    $postList.empty();
+    $postList.append($posts);
+
+  });
+};
+
+
+var handleFormSubmitPosts = function(posts) {
+  posts.preventDefault();
+
+  var postList = {
+    postTitle: $postTitle.val().trim(),
+    postBody: $postBody.val().trim()
+  };
+
+  if (
+    !(postList.postTitle && postList.postBody)
+  ) {
+    alert("You must enter a title and message. Thank you.");
+    return;
+  }
+
+  API3.savePosts(postList).then(function() {
+    refreshPosts();
+  });
+
+  $postTitle.val("");
+  $postBody.val("");
+
+  postModal.style.display = "none";
+};
+
+
+var handleDeleteBtnClickPosts = function() {
+  var idToDelete3 = $(this)
+    .parent()
+    .attr("data-id");
+
+  API3.deletePosts(idToDelete3).then(function() {
+    refreshPosts();
+  });
+};
+
+// Add event listeners to the submit and delete buttons
+$submitPost.on("click", handleFormSubmitPosts);
+//deleting a post
+$postList.on("click", ".delete", handleDeleteBtnClickPosts);
+
+//New Post Modal
+var postModal = document.getElementById("postModal");
+var postBtn = document.getElementById("postBtn");
+var postClose = document.getElementById("postClose");
+postBtn.onclick = function() {
+  postModal.style.display = "block";
+};
+postClose.onclick = function() {
+  postModal.style.display = "none";
+};
+window.onclick = function(post) {
+  if (post.target === postModal) {
+    postModal.style.display = "none";
+  }
+};
+
+
