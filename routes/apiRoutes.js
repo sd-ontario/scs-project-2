@@ -17,7 +17,9 @@ module.exports = function(app) {
 
   // Delete an example by id
   app.delete("/api/examples/:id", function(req, res) {
-    db.Example.destroy({ where: { id: req.params.id } }).then(function(dbExamples) {
+    db.Example.destroy({ where: { id: req.params.id } }).then(function(
+      dbExamples
+    ) {
       res.json(dbExamples);
     });
   });
@@ -54,7 +56,9 @@ module.exports = function(app) {
   });
   // Delete an Event by id
   app.delete("/api/Events/:id", function(req, res) {
-    db.Events.destroy({ where: { id: req.params.id } }).then(function(dbEvents) {
+    db.Events.destroy({ where: { id: req.params.id } }).then(function(
+      dbEvents
+    ) {
       res.json(dbEvents);
     });
   });

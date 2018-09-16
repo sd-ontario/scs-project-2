@@ -3,7 +3,12 @@ var $exampleText = $("#example-text");
 var $exampleDescription = $("#example-description");
 var $submitBtn = $("#submit");
 var $exampleList = $("#example-list");
-
+var eventStore = [];
+var strictBounds;
+var markerLat;
+var markerLng;
+var eventLocation;
+var address;
 // The API object contains methods for each kind of request we'll make
 var API = {
   saveExample: function(example) {
@@ -141,7 +146,8 @@ var API2 = {
 var refreshEvents = function() {
   API2.getEvents().then(function(data) {
     var $events = data.map(function(Events) {
-      var $pOne = $("<p>").text("Event: " + Events.eventName);
+      var $pOne = $("<p class='currentEvtName'>").text("Event: " + Events.eventName);
+      eventNameStore = Events.eventName;
       var $pTwo = $("<p>").text("Type: " + Events.eventType);
       var $pThree = $("<p>").text("Description: " + Events.eventDescription);
       var $pFour = $("<p>").text("Location: " + Events.eventLocation);
@@ -179,6 +185,8 @@ var handleFormSubmitEvents = function(event) {
     eventLocation: $eventLocation.val().trim(),
     eventType: $eventType.val().trim()
   };
+  eventStore = eventList.eventName;
+  console.log(eventStore);
 
   if (
     !(eventList.eventName && eventList.eventLocation && eventList.eventType)
@@ -257,21 +265,54 @@ window.onclick = function(event) {
   }
 };
 
-let lat = 51.508742;
-let long = -.0120850;
+function initialize() {
+  myMap();
+  initAutocomplete();
+}
+let lat = -25.363882;
+let long = 121.044922;
 
 function myMap() {
   var mapCanvas = document.getElementById("map");
-  var myCenter= new google.maps.LatLng(lat, long);
+  var myCenter = new google.maps.LatLng(lat, long);
   var mapOptions = {center: myCenter, zoom: 5};
+  console.log(google.maps);
   var map = new google.maps.Map(mapCanvas, mapOptions);
-  //google.maps.event.addListener($submitEvt, 'click', function() {
-    var eventLocation = {lat: -34.397, lng: 150.644};
     $submitEvt.on("click",function(){
-      placeMarker(map, eventLocation);  
-    });
-    //placeMarker(map, (51.508742, -.0120850));
-  //});
+      getLatitudeLongitude(showResult, address);
+      eventLocation = {lat: Number(markerLat), lng: Number(markerLng)};
+      placeMarker(map, eventLocation);
+      });
+
+  map.setOptions({draggable: false, scrollwheel: false, disableDoubleClickZoom: true});
+  console.log(map)
+  var minZoomLevel = 5;
+  google.maps.event.addListener(map, 'zoom_changed', function() {
+    if (map.getZoom() < minZoomLevel) map.setZoom(minZoomLevel);
+  });
+    };
+
+function showResult(result) {
+  markerLat = result.geometry.location.lat();
+  console.log(markerLat);
+  markerLng = result.geometry.location.lng();
+  console.log(markerLng);
+}
+
+function getLatitudeLongitude(callback, address) {
+  // If adress is not supplied, use default value 'Ferrol, Galicia, Spain'
+  address = document.getElementById('event-location').value || 'Toronto, ON'
+  // Initialize the Geocoder
+  geocoder = new google.maps.Geocoder();
+  if (geocoder) {
+      geocoder.geocode({
+          'address': address
+      }, function (results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+              callback(results[0]);
+          }
+      });
+  }
 }
 
 function placeMarker(map, location) {
@@ -280,10 +321,38 @@ function placeMarker(map, location) {
     map: map
   });
   var infowindow = new google.maps.InfoWindow({
-    //content: 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()
+    content: this.eventStore
   });
   infowindow.open(map,marker);
 }
+
+var input = document.getElementById('event-location');
+function initAutocomplete() {
+  // Create the autocomplete object, restricting the search to geographical cities
+  //When a user selects a city, populate the search bar with that result
+  autocomplete = new google.maps.places.Autocomplete(
+      /** @type {!HTMLInputElement} */(input),
+      {types: ['(cities)']}
+  );
+  };
+  // Allow user to submit when pressing enter
+  input.addEventListener("keyup", function(event) {
+      console.log(autocomplete);
+      event.preventDefault();
+      if (event.keyCode === 13) {
+          document.getElementById("submit-event").click();
+      }
+  });
+
+  // Do not allow user to enter anything but a letter in the text-field
+  $(document).ready(function() {
+      $(input).keypress(function(key) {
+          if(key.charCode > 65 || key.charCode < 90 && key.charCode > 97 || key.charCode < 122 && key.charCode == 32){ return true;
+          } else {return false;
+          }
+      });
+  });
+
 
 
 
@@ -409,4 +478,5 @@ window.onclick = function(post) {
     postModal.style.display = "none";
   }
 };
+
 
