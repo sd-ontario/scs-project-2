@@ -1,12 +1,14 @@
 const path = require("path");
 const router = require('express');
 var db = require("../models");
-var authController = require("../controllers/authContoller");
+var authController = require("../controllers/authController");
 
 
 module.exports = function(app) {
   // Load index page
   app.get("/", authController.landingpage);
+  app.get("/signup", authController.signup);
+  app.get("/signin", authController.signin);
 
 
   app.get("/dashboard", function(req, res) {

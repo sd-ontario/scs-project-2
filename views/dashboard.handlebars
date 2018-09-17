@@ -64,15 +64,13 @@
             <div class="bhoechie-tab-content active">
               <center>
 
-
-
-
-
                 <div id="community-image">
                   <img id='post-img' src="../images/community.png">
                 </div>
                 <h2>Posts</h2>
 
+
+                <p>This page features the latest posts from your neighbours. Please click the <em>Create Post</em> button below if you would like to post about a new neighbourhood announcement or post a household item you would like to market as for sale. Thank you.</p>
                 <div class="container blog glyphicon glyphicon-posts">
                   <div class="row">
                     <!--Waiting for sign-up/login code
@@ -90,6 +88,25 @@
                   <div class="modal" id="postModal">
                     <div class="modal-content colcol-lg-4">
                       <form id="cms" name="cms">
+                        <fieldset>
+                          <legend>Create a Post</legend>
+                        <div class="form-group">
+                          <h3>Category</h3>
+
+                          <select id="category">
+                            <option value="announcement">Announcement</option>
+                            <option value="sale">For sale item(s)</option>
+                          </select>
+
+                          <input type="radio" id="announcement" value="announcement" name="category"> <label for="announcement">Announcement</label><br/>
+                          <input type="radio" id="sale" value="sale" name="category"> <label for="sale">For sale item</label>
+
+                          <h3>Message</h3>
+                          <label for="title">Title:</label> <input class="form-control" id="post-title" placeholder="Post Title"
+                            type="text"><br>
+                          <label for="body">Body:</label>
+                          <p><em>Note: If this post is about a for sale item please include the item's price in your message below. Thank you.</em></p>
+
                         <div class="form-group">
                           <label for="title">Title:</label> <input class="form-control" id="post-title" placeholder="Post Title"
                             type="text"><br>
@@ -105,11 +122,14 @@
                           <button class="btn btn-success submit" id="submit-post" type="submit">Submit</button> <button
                             class="btn btn-info" id="postClose">Close</button>
                         </div>
+                        </fieldset>
                       </form>
                     </div>
                   </div>
                 </div><!-- Posts -->
                 <div id="showPosts">
+
+                  <h3>Announcements</h3>
                   <ul class="list-group" id="post-list">
                     <li style="list-style: none">{{#each Posts}}</li>
                     <li class="list-group-item" data-id="{{this.id}}">
@@ -118,13 +138,19 @@
                     </li>
                     <li style="list-style: none">{{/each}}</li>
                   </ul>
+                  <h3>For sale items</h3>
+                  <ul class="list-group" id="sale-list">
+                    <li style="list-style: none">{{#each Sales}}</li>
+                    <li class="list-group-item-sale" data-id="{{this.id}}">
+                      <p>{{this.postTitle}}</p>
+                      <p>{{this.postBody}}</p><button class="btn btn-danger float-right delete">ｘ</button>
+                    </li>
+                    <li style="list-style: none">{{/each}}</li>
+                  </ul>                  
+                </div>
                 </div>
               </center>
-
             </div> <!-- post tab div ends -->
-
-
-
             <div class="bhoechie-tab-content">
               <center>
                 <hr>
@@ -183,11 +209,6 @@
                   </form>
                 </div> <!-- div events -->
             </div>
-
-
-
-            {{!--
-            <!---DUplicate code for events ->>
         <div class="col-lg-3">
           <!-- Trigger/Open The Modal -->
             <button id="allEventsBtn">View All Current Events</button>

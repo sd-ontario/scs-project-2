@@ -370,10 +370,12 @@ function initAutocomplete() {
 
 
 // Get references to page elements
+var $postCategory = $("#category");
 var $postTitle = $("#post-title");
 var $postBody = $("#post-body");
 var $submitPost = $("#submit-post");
 var $postList = $("#post-list");
+var $saleList = $("#sale-list");
 
 // The API object contains methods for each kind of request we'll make
 var API3 = {
@@ -432,24 +434,62 @@ var refreshPosts = function() {
 };
 
 
+var salesPosts = function() {
+  API3.getPosts().then(function(data) {
+    var $sales = data.map(function(Sales) {
+      var $titleP = $("<p>").text("Title: " + Sales.postTitle);
+      var $bodyP = $("<p>").text("Body: " + Sales.postBody);
+
+      var $li = $("<li>")
+        .attr({
+          class: "list-group-item",
+          "data-id": Sales.id
+        })
+        .append($titleP, $bodyP);
+
+      var $button = $("<button>")
+        .addClass("btn btn-danger float-right delete")
+        .text("ｘ");
+
+      $li.append($button);
+
+      return $li;
+    });
+
+    $saleList.empty();
+    $saleList.append($sales);
+
+  });
+};
+
+
 var handleFormSubmitPosts = function(posts) {
   posts.preventDefault();
 
   var postList = {
+    postCategory: $postCategory.val(),
     postTitle: $postTitle.val().trim(),
     postBody: $postBody.val().trim()
   };
 
+
   if (
     !(postList.postTitle && postList.postBody)
   ) {
-    alert("You must enter a title and message. Thank you.");
+    alert("You must complete the form. Thank you.");
     return;
   }
 
   API3.savePosts(postList).then(function() {
+
+    if (postList.postCategory === "announcement") {
     refreshPosts();
+  } else {
+    salesPosts();
+    }
+
   });
+
 
   $postTitle.val("");
   $postBody.val("");
@@ -464,8 +504,11 @@ var handleDeleteBtnClickPosts = function() {
     .attr("data-id");
 
   API3.deletePosts(idToDelete3).then(function() {
+   if (postList.postCategory === "announcement") {
     refreshPosts();
-  });
+  } else {
+    salesPosts();
+    }  });
 };
 
 // Add event listeners to the submit and delete buttons
@@ -487,6 +530,9 @@ window.onclick = function(post) {
   if (post.target === postModal) {
     postModal.style.display = "none";
   }
+
 };
+};
+
 
 
