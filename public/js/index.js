@@ -1,4 +1,4 @@
-// Get references to page elements
+//Get references to page elements
 var $exampleText = $("#example-text");
 var $exampleDescription = $("#example-description");
 var $submitBtn = $("#submit");
@@ -41,74 +41,54 @@ var refreshExamples = function() {
       var $a = $("<a>")
         .text(example.text)
         .attr("href", "/example/" + example.id);
-
       var $li = $("<li>")
         .attr({
           class: "list-group-item",
           "data-id": example.id
         })
         .append($a);
-
       var $button = $("<button>")
         .addClass("btn btn-danger float-right delete")
         .text("ｘ");
-
       $li.append($button);
-
       return $li;
     });
-
     $exampleList.empty();
     $exampleList.append($examples);
   });
 };
-
 // handleFormSubmit is called whenever we submit a new example
 // Save the new example to the db and refresh the list
 var handleFormSubmit = function(event) {
   event.preventDefault();
-
   var example = {
     text: $exampleText.val().trim(),
     description: $exampleDescription.val().trim()
   };
-
   if (!(example.text && example.description)) {
     alert("You must enter an example text and description!");
     return;
   }
-
   API.saveExample(example).then(function() {
     refreshExamples();
   });
-
   $exampleText.val("");
   $exampleDescription.val("");
 };
-
 // handleDeleteBtnClick is called when an example's delete button is clicked
 // Remove the example from the db and refresh the list
 var handleDeleteBtnClick = function() {
   var idToDelete = $(this)
     .parent()
     .attr("data-id");
-
   API.deleteExample(idToDelete).then(function() {
     refreshExamples();
   });
 };
-
 // Add event listeners to the submit and delete buttons
 $submitBtn.on("click", handleFormSubmit);
 $exampleList.on("click", ".delete", handleDeleteBtnClick);
-
-
-
-
-
-
 //CODE FOR EVENTS PART OF DASHBOARD
-
 // Get references to page elements
 var $eventName = $("#event-name");
 var $eventDescription = $("#event-description");
@@ -116,7 +96,6 @@ var $eventType = $("#event-type");
 var $eventLocation = $("#event-location");
 var $submitEvt = $("#submit-event");
 var $eventsList = $("#events-list");
-
 // The API object contains methods for each kind of request we'll make
 var API2 = {
   saveEvents: function(Events) {
@@ -152,33 +131,26 @@ var refreshEvents = function() {
       var $pThree = $("<p>").text("Description: " + Events.eventDescription);
       var $pFour = $("<p>").text("Location: " + Events.eventLocation);
       //.attr("href", "/Events/" + Events.id);
-
       var $li = $("<li>")
         .attr({
           class: "list-group-item",
           "data-id": Events.id
         })
         .append($pOne, $pTwo, $pThree, $pFour);
-
       var $button = $("<button>")
         .addClass("btn btn-danger float-right delete")
         .text("ｘ");
-
       $li.append($button);
-
       return $li;
     });
-
     $eventsList.empty();
     $eventsList.append($events);
   });
 };
-
 // handleFormSubmit is called whenever we submit a new example
 // Save the new example to the db and refresh the list
 var handleFormSubmitEvents = function(event) {
   event.preventDefault();
-
   var eventList = {
     eventName: $eventName.val().trim(),
     eventDescription: $eventDescription.val().trim(),
@@ -187,42 +159,34 @@ var handleFormSubmitEvents = function(event) {
   };
   eventStore = eventList.eventName;
   console.log(eventStore);
-
   if (
     !(eventList.eventName && eventList.eventLocation && eventList.eventType)
   ) {
     alert("Please complete all fields.");
     return;
   }
-
   API2.saveEvents(eventList).then(function() {
     refreshEvents();
   });
-
   $eventName.val("");
   $eventType.val("");
   $eventDescription.val("");
   $eventLocation.val("");
-
   addEventModal.style.display = "none";
 };
-
 // handleDeleteBtnClick is called when an example's delete button is clicked
 // Remove the example from the db and refresh the list
 var handleDeleteBtnClickEvents = function() {
   var idToDelete2 = $(this)
     .parent()
     .attr("data-id");
-
   API2.deleteEvents(idToDelete2).then(function() {
     refreshEvents();
   });
 };
-
 // Add event listeners to the submit and delete buttons
 $submitEvt.on("click", handleFormSubmitEvents);
 $eventsList.on("click", ".delete", handleDeleteBtnClickEvents);
-
 // New Events Form Modal
 var addEventModal = document.getElementById("addEventModal");
 // Get the button that opens the modal
@@ -243,7 +207,6 @@ window.onclick = function(event) {
     addEventModal.style.display = "none";
   }
 };
-
 //All Events Modal
 var allEventsModal = document.getElementById("allEventsModal");
 // Get the button that opens the modal
@@ -264,14 +227,12 @@ window.onclick = function(event) {
     allEventsModal.style.display = "none";
   }
 };
-
 function initialize() {
   myMap();
   initAutocomplete();
 }
 let lat = -25.363882;
 let long = 121.044922;
-
 function myMap() {
   var mapCanvas = document.getElementById("map");
   var myCenter = new google.maps.LatLng(lat, long);
@@ -283,7 +244,6 @@ function myMap() {
       eventLocation = {lat: Number(markerLat), lng: Number(markerLng)};
       placeMarker(map, eventLocation);
       });
-
   map.setOptions({draggable: false, scrollwheel: false, disableDoubleClickZoom: true});
   console.log(map)
   var minZoomLevel = 5;
@@ -291,14 +251,12 @@ function myMap() {
     if (map.getZoom() < minZoomLevel) map.setZoom(minZoomLevel);
   });
     };
-
 function showResult(result) {
   markerLat = result.geometry.location.lat();
   console.log(markerLat);
   markerLng = result.geometry.location.lng();
   console.log(markerLng);
 }
-
 function getLatitudeLongitude(callback, address) {
   // If adress is not supplied, use default value 'Ferrol, Galicia, Spain'
   address = document.getElementById('event-location').value || 'Toronto, ON'
@@ -314,7 +272,6 @@ function getLatitudeLongitude(callback, address) {
       });
   }
 }
-
 function placeMarker(map, location) {
   var marker = new google.maps.Marker({
     position: location,
@@ -325,7 +282,6 @@ function placeMarker(map, location) {
   });
   infowindow.open(map,marker);
 }
-
 var input = document.getElementById('event-location');
 function initAutocomplete() {
   // Create the autocomplete object, restricting the search to geographical cities
@@ -343,7 +299,6 @@ function initAutocomplete() {
           document.getElementById("submit-event").click();
       }
   });
-
   // Do not allow user to enter anything but a letter in the text-field
   $(document).ready(function() {
       $(input).keypress(function(key) {
@@ -362,21 +317,12 @@ function initAutocomplete() {
         $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
     });
 });
-
-
-
-
 /*** Code for POSTS in DASHBOARD ***/
-
-
 // Get references to page elements
-var $postCategory = $("#category");
 var $postTitle = $("#post-title");
 var $postBody = $("#post-body");
 var $submitPost = $("#submit-post");
 var $postList = $("#post-list");
-var $saleList = $("#sale-list");
-
 // The API object contains methods for each kind of request we'll make
 var API3 = {
   savePosts: function(Posts) {
@@ -402,120 +348,59 @@ var API3 = {
     });
   }
 };
-
-
 // refreshPosts gets new posts from the db and repopulates the list
 var refreshPosts = function() {
   API3.getPosts().then(function(data) {
     var $posts = data.map(function(Posts) {
       var $titleP = $("<p>").text("Title: " + Posts.postTitle);
       var $bodyP = $("<p>").text("Body: " + Posts.postBody);
-
       var $li = $("<li>")
         .attr({
           class: "list-group-item",
           "data-id": Posts.id
         })
         .append($titleP, $bodyP);
-
       var $button = $("<button>")
         .addClass("btn btn-danger float-right delete")
         .text("ｘ");
-
       $li.append($button);
-
       return $li;
     });
-
     $postList.empty();
     $postList.append($posts);
-
   });
 };
-
-
-var salesPosts = function() {
-  API3.getPosts().then(function(data) {
-    var $sales = data.map(function(Sales) {
-      var $titleP = $("<p>").text("Title: " + Sales.postTitle);
-      var $bodyP = $("<p>").text("Body: " + Sales.postBody);
-
-      var $li = $("<li>")
-        .attr({
-          class: "list-group-item",
-          "data-id": Sales.id
-        })
-        .append($titleP, $bodyP);
-
-      var $button = $("<button>")
-        .addClass("btn btn-danger float-right delete")
-        .text("ｘ");
-
-      $li.append($button);
-
-      return $li;
-    });
-
-    $saleList.empty();
-    $saleList.append($sales);
-
-  });
-};
-
-
 var handleFormSubmitPosts = function(posts) {
   posts.preventDefault();
-
   var postList = {
-    postCategory: $postCategory.val(),
     postTitle: $postTitle.val().trim(),
     postBody: $postBody.val().trim()
   };
-
-
   if (
     !(postList.postTitle && postList.postBody)
   ) {
-    alert("You must complete the form. Thank you.");
+    alert("You must enter a title and message. Thank you.");
     return;
   }
-
   API3.savePosts(postList).then(function() {
-
-    if (postList.postCategory === "announcement") {
     refreshPosts();
-  } else {
-    salesPosts();
-    }
-
   });
-
-
   $postTitle.val("");
   $postBody.val("");
-
   postModal.style.display = "none";
 };
-
-
 var handleDeleteBtnClickPosts = function() {
   var idToDelete3 = $(this)
     .parent()
     .attr("data-id");
-
   API3.deletePosts(idToDelete3).then(function() {
-   if (postList.postCategory === "announcement") {
     refreshPosts();
-  } else {
-    salesPosts();
-    }  });
+  });
 };
-
 // Add event listeners to the submit and delete buttons
 $submitPost.on("click", handleFormSubmitPosts);
 //deleting a post
 $postList.on("click", ".delete", handleDeleteBtnClickPosts);
-
 //New Post Modal
 var postModal = document.getElementById("postModal");
 var postBtn = document.getElementById("postBtn");
@@ -530,9 +415,6 @@ window.onclick = function(post) {
   if (post.target === postModal) {
     postModal.style.display = "none";
   }
-
 };
-};
-
 
 
