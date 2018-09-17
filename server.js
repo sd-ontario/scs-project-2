@@ -34,7 +34,9 @@ app.use(passport.session()); // persistent login sessions
 
 // Routes
 require("./routes/apiRoutes")(app);
-require("./routes/htmlRoutes")(app);
+require("./routes/htmlRoutes")(app, passport);
+
+require("./config/passport/passport")(passport, db.users);
 
 var syncOptions = { force: false };
 
