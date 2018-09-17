@@ -530,4 +530,9 @@ window.onclick = function(post) {
   if (post.target === postModal) {
     postModal.style.display = "none";
   }
+
 };
+};
+
+
+

@@ -1,17 +1,14 @@
 const path = require("path");
 const router = require('express');
 var db = require("../models");
+var authController = require("../controllers/authController");
+
 
 module.exports = function(app) {
   // Load index page
-  app.get("/", function(req, res) {
-    db.Example.findAll({}).then(function(dbExample) {
-      res.render("index", {
-        msg: "Welcome!",
-        examples: dbExample
-      });
-    });
-  });
+  app.get("/", authController.landingpage);
+  app.get("/signup", authController.signup);
+  app.get("/signin", authController.signin);
 
 
   app.get("/dashboard", function(req, res) {
