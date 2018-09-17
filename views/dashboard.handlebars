@@ -1,141 +1,266 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title></title>
+
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+    crossorigin="anonymous">
+
 </head>
+
 <body>
   <div id="dashboard">
     <div class="container">
       <div class="row">
-        <div class="col-12">
-          <h1>Dashboard</h1>
-          <p>Welcome! Please see below for the latest posts and events happening in your neighbourhood.</p>
-          <h2>Posts</h2>
-          <div class="container blog">
-            <div class="row">
-              <!--Waiting for sign-up/login code
-    <div class="col-md-2 col-sm-2">
-      <a class="btn btn-default" href="/authors">Manage Authors</a>
-    </div>
-    -->
-              <div class="col-md-2 col-sm-2">
-                <!--New post modal button-->
-                <button id="postBtn">New Post</button>
-              </div>
-            </div><!--end row-->
-            <!--New post modal form-->
-            <div class="modal" id="postModal">
-              <div class="modal-content col-lg-4">
-                <form id="cms" name="cms">
-                  <div class="form-group">
-                    <label for="title">Title:</label> <input class="form-control" id="post-title" placeholder="Post Title" type="text"><br>
-                    <label for="body">Body:</label> 
-                    <textarea class="form-control" id="post-body" placeholder="Post Body" rows="10"></textarea> <!--Waiting for sign-up/profile code
-          <div class="form-group">
-            <label for="category">Select Author:</label>
-            <select class="form-control" id="author">
-            </select>
-          </div>-->
-                    <br>
-                    <button class="btn btn-success submit" id="submit-post" type="submit">Submit</button> <button class="btn btn-info" id="postClose">Close</button>
-                  </div>
-                </form>
-              </div>
+
+
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+
+            <div class="collapse navbar-collapse" id="myNavbar">
+              <ul class="nav navbar-nav">
+                <li> <img id="logo" src="../images/logo2.png"></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-username"></span> Hello, [User Name]</a></li>
+                <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+              </ul>
             </div>
-          </div><!-- Posts -->
-          <ul class="list-group" id="post-list">
-            <li style="list-style: none">{{#each Posts}}</li>
-            <li class="list-group-item" data-id="{{this.id}}">
-              <p>{{this.postTitle}}</p>
-              <p>{{this.postBody}}</p><button class="btn btn-danger float-right delete">ｘ</button>
-            </li>
-            <li style="list-style: none">{{/each}}</li>
-          </ul>
-          <hr>
-          <h2>Events</h2>
-          <div id="map"></div>
-          <div class="row">
-            <div class="col-lg-3 offset-3">
-              <button id="addEventBtn">Add an Event</button> <!-- The Modal -->
-              <div id="addEventModal">
-                <!-- Modal content -->
-                <div class="modal-content col-lg-3">
-                  <span id="addEventClose">&times;</span>
-                  <form action="POST" class="clearfix mb-4">
-                    <div class="form-group">
-                      <label for="event-name">New Event</label> <input aria-describedby="event-name" class="form-control" id="event-name" placeholder="Enter New Event" type="text">
-                    </div>
-                    <div class="form-group">
-                      <label for="event-type">Event Type</label> <input aria-describedby="event-type" class="form-control" id="event-type" placeholder="Enter Event Type">
-                    </div>
-                    <div class="form-group">
-                      <label for="event-description">Event Description</label> 
-                      <textarea aria-describedby="event-description" class="form-control" id="event-description" placeholder="Enter Event Description"></textarea>
-                    </div>
-                    <div class="form-group">
-                      <label for="event-location">Event Location</label> <input aria-describedby="event-location" class="form-control" id="event-location" placeholder="Enter Event Location">
-                    </div><button class="btn btn-primary float-right" id="submit-event">Submit</button>
-                  </form>
+          </div>
+        </nav>
+
+
+        <div class="col-lg-12 col-md-5 col-sm-8 col-xs-9 bhoechie-tab-container">
+
+
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
+            <div class="list-group">
+              <a href="#" class="list-group-item active text-center">
+                <h4 class="glyphicon glyphicon-posts"></h4><br />Posts
+              </a>
+              <a href="#" class="list-group-item text-center">
+                <h4 class="glyphicon glyphicon-events"></h4><br />Events
+              </a>
+              <a href="#" class="list-group-item text-center">
+                <h4 class="glyphicon glyphicon-messages"></h4><br />Messages
+              </a>
+              <a href="#" class="list-group-item text-center">
+                <h4 class="glyphicon glyphicon-people"></h4><br />People
+              </a>
+              <a href="#" class="list-group-item text-center">
+                <h4 class="glyphicon glyphicon-profile"></h4><br />Your Profile
+              </a>
+            </div>
+            <!--List group-->
+          </div>
+          <!--B Menu-->
+
+
+
+          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+
+            <div class="bhoechie-tab-content active">
+              <center>
+
+
+
+
+
+                <div id="community-image">
+                  <img id='post-img' src="../images/community.png">
                 </div>
-              </div>
-            </div>
-            <div class="col-lg-3">
-              <!-- Trigger/Open The Modal -->
-              <button id="allEventsBtn">View All Current Events</button> <!-- The Modal -->
-              <div class="modal" id="allEventsModal">
-                <!-- Modal content -->
-                <div class="modal-content col-lg-4">
-                  <span id="allEventsClose">&times;</span>
-                  <ul class="list-group" id="events-list">
-                    <li style="list-style: none">{{#each Events}}</li>
+                <h2>Posts</h2>
+
+                <div class="container blog glyphicon glyphicon-posts">
+                  <div class="row">
+                    <!--Waiting for sign-up/login code
+              <div class="col-md-2 col-sm-2">
+             <a class="btn btn-default" href="/authors">Manage Authors</a>
+           </div>
+            -->
+                    <div class="col-md-2 colcol-sm-2">
+                      <!--New post modal button-->
+                      <button id="postBtn" class="btn btn-secondary">Create Post</button>
+                    </div>
+                  </div>
+                  <!--end row-->
+                  <!--New post modal form-->
+                  <div class="modal" id="postModal">
+                    <div class="modal-content colcol-lg-4">
+                      <form id="cms" name="cms">
+                        <div class="form-group">
+                          <label for="title">Title:</label> <input class="form-control" id="post-title" placeholder="Post Title"
+                            type="text"><br>
+                          <label for="body">Body:</label>
+                          <textarea class="form-control" id="post-body" placeholder="Post Body" rows="10"></textarea>
+                          <!--Waiting for sign-up/profile code
+                    <div class="form-group">
+                    <label for="category">Select Author:</label>
+                     <select class="form-control" id="author">
+                     </select>
+                     </div>-->
+                          <br>
+                          <button class="btn btn-success submit" id="submit-post" type="submit">Submit</button> <button
+                            class="btn btn-info" id="postClose">Close</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div><!-- Posts -->
+                <div id="showPosts">
+                  <ul class="list-group" id="post-list">
+                    <li style="list-style: none">{{#each Posts}}</li>
                     <li class="list-group-item" data-id="{{this.id}}">
-                      <p>{{this.eventName}}</p>
-                      <p>{{this.eventType}}</p>
-                      <p>{{this.eventDescription}}</p>
-                      <p>{{this.eventLocation}}</p><button class="btn btn-danger float-right delete">ｘ</button>
+                      <p>{{this.postTitle}}</p>
+                      <p>{{this.postBody}}</p><button class="btn btn-danger float-right delete">ｘ</button>
                     </li>
                     <li style="list-style: none">{{/each}}</li>
                   </ul>
                 </div>
-              </div>
+              </center>
+
+            </div> <!-- post tab div ends -->
+
+
+
+            <div class="bhoechie-tab-content">
+              <center>
+                <hr>
+                <h2>Events</h2>
+                <div id="map"></div>
+                <div class="row">
+                  <div class="col-lg-3 offset-3">
+                    <button id="addEventBtn">Add an Event</button> <!-- The Modal -->
+                    <div id="addEventModal">
+                      <!-- Modal content -->
+                      <div class="modal-content col-lg-3">
+                        <span id="addEventClose">&times;</span>
+                        <form action="POST" class="clearfix mb-4">
+                          <div class="form-group">
+                            <label for="event-name">New Event</label> <input aria-describedby="event-name" class="form-control"
+                              id="event-name" placeholder="Enter New Event" type="text">
+                          </div>
+                          <div class="form-group">
+                            <label for="event-type">Event Type</label> <input aria-describedby="event-type" class="form-control"
+                              id="event-type" placeholder="Enter Event Type">
+                          </div>
+                          <div class="form-group">
+                            <label for="event-description">Event Description</label>
+                            <textarea aria-describedby="event-description" class="form-control" id="event-description"
+                              placeholder="Enter Event Description"></textarea>
+                          </div>
+                          <div class="form-group">
+                            <label for="event-location">Event Location</label> <input aria-describedby="event-location"
+                              class="form-control" id="event-location" placeholder="Enter Event Location">
+                          </div><button class="btn btn-primary float-right" id="submit-event">Submit</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <!-- Trigger/Open The Modal -->
+                    <button id="allEventsBtn">View All Current Events</button> <!-- The Modal -->
+                    <div class="modal" id="allEventsModal">
+                      <!-- Modal content -->
+                      <div class="modal-content col-lg-4">
+                        <span id="allEventsClose">&times;</span>
+                        <ul class="list-group" id="events-list">
+                          <li style="list-style: none">{{#each Events}}</li>
+                          <li class="list-group-item" data-id="{{this.id}}">
+                            <p>{{this.eventName}}</p>
+                            <p>{{this.eventType}}</p>
+                            <p>{{this.eventDescription}}</p>
+                            <p>{{this.eventLocation}}</p><button class="btn btn-danger float-right delete">ｘ</button>
+                          </li>
+                          <li style="list-style: none">{{/each}}</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <button id="submit-event" class="btn btn-primary float-right">Submit</button>
+                  </form>
+                </div> <!-- div events -->
             </div>
-            <button id="submit-event" class="btn btn-primary float-right" >Submit</button>
-          </form>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-3">
-      <!-- Trigger/Open The Modal -->
-      <button id="allEventsBtn">View All Current Events</button>
-      <!-- The Modal -->
-        <div id="allEventsModal" class="modal">
-        <!-- Modal content -->
-          <div class="modal-content col-lg-4">
-          <span id="allEventsClose">&times;</span>
-            <ul id="events-list" class="list-group">
-              {{#each Events}}
-              <li data-id="{{this.id}}" class="list-group-item">
-                <p>{{this.eventName}}</p>
-                <p>{{this.eventType}}</p>
-                <p>{{this.eventDescription}}</p>
-                <p>{{this.eventLocation}}</p>
-                <button class="btn btn-danger float-right delete">ｘ</button>
-              </li>
-              {{/each}}
-            </ul>
+
+
+
+            {{!--
+            <!---DUplicate code for events ->>
+        <div class="col-lg-3">
+          <!-- Trigger/Open The Modal -->
+            <button id="allEventsBtn">View All Current Events</button>
+            <!-- The Modal -->
+            <div id="allEventsModal" class="modal">
+              <!-- Modal content -->
+              <div class="modal-content col-lg-4">
+                <span id="allEventsClose">&times;</span>
+                <ul id="events-list" class="list-group">
+                  {{#each Events}}
+                  <li data-id="{{this.id}}" class="list-group-item">
+                    <p>{{this.eventName}}</p>
+                    <p>{{this.eventType}}</p>
+                    <p>{{this.eventDescription}}</p>
+                    <p>{{this.eventLocation}}</p>
+                    <button class="btn btn-danger float-right delete">ｘ</button>
+                  </li>
+                  {{/each}}
+                </ul>
+              </div>
+              --}}
+              <div class="bhoechie-tab-content">
+                <div class="container blog glyphicon glyphicon-messages">
+                  <div id="community-image">
+                    <img id='tab-img' src="../images/comingsoon.jpg">
+                  </div>
+                </div>
+              </div>
+              <div class="bhoechie-tab-content">
+                <div class="container blog glyphicon glyphicon-people">
+                  <div id="community-image">
+
+                    <img id='tab-img' src="../images/comingsoon.jpg">
+                  </div>
+                </div>
+              </div>
+              <div class="bhoechie-tab-content">
+                <div class="container blog glyphicon glyphicon-profile">
+                  <div id="community-image">
+                    <img id='tab-img' src="../images/comingsoon.jpg">
+                  </div>
+                </div>
+
+              </div>
+
+
+            </div> <!-- b tab ends-->
+
           </div>
         </div>
+        <!--BT container  ends--->
+
+
+
+
+
+
+
       </div>
+      <!--row div ends -->
+
     </div>
+    <!--container div ends-->
   </div>
-</div>
+  <!--dashboard div ends--->
 
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="/js/index.js"></script>
-<script src="js/blog.js" type="text/javascript"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC83gYW2lRHk0-0EYyDuaC-NXsDWarTXEI&libraries=places&callback=initialize"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="/js/index.js"></script>
+  <script src="js/blog.js" type="text/javascript"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC83gYW2lRHk0-0EYyDuaC-NXsDWarTXEI&libraries=places&callback=initialize"></script>
 
 
 </body>
+
 </html>

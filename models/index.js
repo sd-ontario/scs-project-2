@@ -19,6 +19,12 @@ if (config.use_env_variable) {
   );
 }
 
+
+
+db.users = require('../models/users.js')(sequelize, Sequelize);  
+db.events = require('../models/events.js')(sequelize, Sequelize);  
+db.posts = require('../models/posts.js')(sequelize, Sequelize);
+
 fs.readdirSync(__dirname)
   .filter(function(file) {
     return (
