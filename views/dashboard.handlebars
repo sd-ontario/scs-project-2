@@ -3,6 +3,19 @@
 
 <head>
   <title></title>
+
+  <style>
+.bs-callout-warning {
+    border-left-color: #aa6708!important;
+}
+.bs-callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+</style>
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
     crossorigin="anonymous">
@@ -49,21 +62,16 @@
           <!--B Menu-->
           <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
             <div class="bhoechie-tab-content active">
-              <center>
                 <div id="community-image">
                   <img id='post-img' src="../images/community.png">
                 </div>
-                <h2>Posts</h2>
+                <h2 style="text-align: center;">Posts</h2>
                 <div class="container blog glyphicon glyphicon-posts">
                   <div class="row">
-                    <!--Waiting for sign-up/login code
-                    <div class="col-md-2 col-sm-2">
-                      <a class="btn btn-default" href="/authors">Manage Authors</a>
-                    </div>-->
-                    <div class="col-md-2 colcol-sm-2">
                       <!--New post modal button-->
-                      <button id="postBtn" class="btn btn-secondary">Create Post</button>
-                    </div>
+                      <button id="postBtn" class="btn-lg btn">Create Post</button>
+                      <br/><br/>
+
                   </div>
                   <!--end row-->
                   <!--New post modal form-->
@@ -75,11 +83,6 @@
                             type="text"><br>
                           <label for="body">Body:</label>
                           <textarea class="form-control" id="post-body" placeholder="Post Body" rows="10"></textarea>
-                          <!--Waiting for sign-up/profile code
-                            <div class="form-group">
-                            <label for="category">Select Author:</label>
-                            <select class="form-control" id="author"></select>
-                            </div>-->
                           <br>
                           <button class="btn btn-success submit" id="submit-post" type="submit">Submit</button> <button
                             class="btn btn-info" id="postClose">Close</button>
@@ -88,18 +91,22 @@
                     </div>
                   </div>
                 </div><!-- Posts -->
-                <div id="showPosts">
-                  <ul class="list-group" id="post-list">
+
+                <div class="bs-callout bs-callout-warning">
+                  <h4>Posts by: Anne</h4>
+                </div>
+<!--                 <div id="showPosts">
+ -->                  <ul class="list-group" id="post-list">
                     <li style="list-style: none">{{#each Posts}}</li>
                     <li class="list-group-item" data-id="{{this.id}}">
                       <p>{{this.postTitle}}</p>
-                      <p>{{this.postBody}}</p><button class="btn btn-danger float-right delete">ｘ</button>
+                      <p>{{this.postBody}}</p>
+                      <button class="btn btn-danger float-right delete">ｘ</button>
                     </li>
                     <li style="list-style: none">{{/each}}</li>
                   </ul>
-                </div>
-              </center>
-            </div> <!-- post tab div ends -->
+<!--                 </div>
+ -->            </div> <!-- post tab div ends -->
             <div class="bhoechie-tab-content">
               <center>
                 <hr>
