@@ -102,6 +102,4 @@ app.get("/api/Post", function (req, res) {
       res.json(dbPosts);
     });
   });
-
-
 };

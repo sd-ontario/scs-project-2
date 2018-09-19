@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
     eventLocation: DataTypes.STRING,
     //eventComments: DataTypes.STRING
     User_ID: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
-    postalCode: { type: DataTypes.STRING, allowNull: false, defaultValue: "L5M6E7" }
+    postalCode: { type: DataTypes.STRING, allowNull: false, defaultValue: "L4E5B3" }
   });
 /*
   Events.associate = function(models) {
