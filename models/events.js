@@ -6,14 +6,19 @@ module.exports = function(sequelize, DataTypes) {
     //eventAuthor: DataTypes.STRING,
     eventLocation: DataTypes.STRING,
     //eventComments: DataTypes.STRING
+    User_ID: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
+    postalCode: { type: DataTypes.STRING, allowNull: false, defaultValue: "L5M6E7" }
   });
+/*
+  Events.associate = function(models) {
+    Events.belongsTo(models.user, {
+      foreignKey: {
+        allowNull: false
+      }
+    });
+  };
+*/
 
-  // Events.associate = function(models) {
-  //   Events.belongsTo(models.Users, {
-  //     foreignKey: {
-  //       allowNull: false
-  //     }
-  //   });
-  // };
   return Events;
+
 };

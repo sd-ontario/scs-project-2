@@ -2,24 +2,18 @@ module.exports = function(sequelize, DataTypes) {
   var Posts = sequelize.define("Posts", {
     postTitle: DataTypes.STRING,
     postBody: DataTypes.STRING,
+    User_ID: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
+    postalCode: { type: DataTypes.STRING, allowNull: false, defaultValue: "L5M6E7" }
   });
 /*
   Posts.associate = function(models) {
-    // We're saying that a Post should belong to a user
-    // A Post can't be created without a user due to the foreign key constraint
-    Posts.belongsTo(models.Users, {
+    Posts.belongsTo(models.user, {
       foreignKey: {
-        allowNull: false
+        allowNull: true
       }
     });
   };
-*/
-  // Events.associate = function(models) {
-  //   Events.belongsTo(models.Users, {
-  //     foreignKey: {
-  //       allowNull: false
-  //     }
-  //   });
-  // };
+  */
+
   return Posts;
 };
