@@ -10,7 +10,6 @@ module.exports = function(app) {
   app.get("/signup", authController.signup);
   app.get("/signin", authController.signin);
 
-
   app.get("/dashboard", function(req, res) {
     db.Events.findAll({}).then(function(dbEvents) {
       res.render("dashboard", {
