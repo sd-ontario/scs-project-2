@@ -4,11 +4,14 @@ var $exampleDescription = $("#example-description");
 var $submitBtn = $("#submit");
 var $exampleList = $("#example-list");
 var eventStore = [];
+var locationStore = [];
 var strictBounds;
 var markerLat;
 var markerLng;
 var eventLocation;
 var address;
+// var lat;
+// var long;
 // The API object contains methods for each kind of request we'll make
 var API = {
   saveExample: function(example) {
@@ -125,7 +128,9 @@ var API2 = {
 var refreshEvents = function() {
   API2.getEvents().then(function(data) {
     var $events = data.map(function(Events) {
-      var $pOne = $("<p class='currentEvtName'>").text("Event: " + Events.eventName);
+      var $pOne = $("<p class='currentEvtName'>").text(
+        "Event: " + Events.eventName
+      );
       eventNameStore = Events.eventName;
       var $pTwo = $("<p>").text("Type: " + Events.eventType);
       var $pThree = $("<p>").text("Description: " + Events.eventDescription);
@@ -158,6 +163,7 @@ var handleFormSubmitEvents = function(event) {
     eventType: $eventType.val().trim()
   };
   eventStore = eventList.eventName;
+  locationStore = eventList.eventLocation;
   console.log(eventStore);
   if (
     !(eventList.eventName && eventList.eventLocation && eventList.eventType)
@@ -231,26 +237,38 @@ function initialize() {
   myMap();
   initAutocomplete();
 }
-let lat = -25.363882;
-let long = 121.044922;
 function myMap() {
+  var geocoder = new google.maps.Geocoder();
+  let lat = 0;
+  let long = 0;
+  geocoder.geocode({ address: "L4E5B3" }, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      lat = results[0].geometry.location.lat();
+      long = results[0].geometry.location.lng();
   var mapCanvas = document.getElementById("map");
   var myCenter = new google.maps.LatLng(lat, long);
-  var mapOptions = {center: myCenter, zoom: 5};
-  console.log(google.maps);
+  var mapOptions = { center: myCenter, zoom: 18 };
   var map = new google.maps.Map(mapCanvas, mapOptions);
-    $submitEvt.on("click",function(){
-      getLatitudeLongitude(showResult, address);
-      eventLocation = {lat: Number(markerLat), lng: Number(markerLng)};
-      placeMarker(map, eventLocation);
-      });
-  map.setOptions({draggable: false, scrollwheel: false, disableDoubleClickZoom: true});
-  console.log(map)
-  var minZoomLevel = 5;
-  google.maps.event.addListener(map, 'zoom_changed', function() {
-    if (map.getZoom() < minZoomLevel) map.setZoom(minZoomLevel);
+  $submitEvt.on("click", function() {
+    getLatitudeLongitude(showResult, address);
+    eventLocation = { lat: Number(markerLat), lng: Number(markerLng) };
+    placeMarker(map, eventLocation);
   });
-    };
+  map.setOptions({
+    draggable: false,
+    scrollwheel: false,
+    disableDoubleClickZoom: true
+  });
+  console.log(map);
+  var minZoomLevel = 5;
+  google.maps.event.addListener(map, "zoom_changed", function() {
+    if (map.getZoom() < minZoomLevel) {
+      map.setZoom(minZoomLevel);
+    }
+  });
+}
+});
+}
 function showResult(result) {
   markerLat = result.geometry.location.lat();
   console.log(markerLat);
@@ -258,18 +276,22 @@ function showResult(result) {
   console.log(markerLng);
 }
 function getLatitudeLongitude(callback, address) {
-  // If adress is not supplied, use default value 'Ferrol, Galicia, Spain'
-  address = document.getElementById('event-location').value || 'Toronto, ON'
+  // If address is not supplied, use default value 'Ferrol, Galicia, Spain'
+  address = this.locationStore;
+  console.log(address);
   // Initialize the Geocoder
   geocoder = new google.maps.Geocoder();
   if (geocoder) {
-      geocoder.geocode({
-          'address': address
-      }, function (results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-              callback(results[0]);
-          }
-      });
+    geocoder.geocode(
+      {
+        address: address
+      },
+      function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          callback(results[0]);
+        }
+      }
+    );
   }
 }
 function placeMarker(map, location) {
@@ -280,42 +302,53 @@ function placeMarker(map, location) {
   var infowindow = new google.maps.InfoWindow({
     content: this.eventStore
   });
-  infowindow.open(map,marker);
+  infowindow.open(map, marker);
 }
-var input = document.getElementById('event-location');
+var input = document.getElementById("event-location");
 function initAutocomplete() {
   // Create the autocomplete object, restricting the search to geographical cities
   //When a user selects a city, populate the search bar with that result
   autocomplete = new google.maps.places.Autocomplete(
-      /** @type {!HTMLInputElement} */(input),
-      {types: ['(cities)']}
+    /** @type {!HTMLInputElement} */ (input),
+    { types: ['address'] },
+    
   );
-  };
-  // Allow user to submit when pressing enter
-  input.addEventListener("keyup", function(event) {
-      console.log(autocomplete);
-      event.preventDefault();
-      if (event.keyCode === 13) {
-          document.getElementById("submit-event").click();
-      }
+}
+// Allow user to submit when pressing enter
+// input.addEventListener("keyup", function(event) {
+//   console.log(autocomplete);
+//   event.preventDefault();
+//   if (event.keyCode === 13) {
+//     document.getElementById("submit-event").click();
+//   }
+// });
+// Do not allow user to enter anything but a letter in the text-field
+// $(document).ready(function() {
+//   $(input).keypress(function(key) {
+//     if (
+//       key.charCode > 65 ||
+//       (key.charCode < 90 && key.charCode > 97) ||
+//       (key.charCode < 122 && key.charCode == 32)
+//     ) {
+//       return true;
+//     } else {
+//       return false;
+//     }
+//   });
+// });
+$(document).ready(function() {
+  $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
+    e.preventDefault();
+    $(this)
+      .siblings("a.active")
+      .removeClass("active");
+    $(this).addClass("active");
+    var index = $(this).index();
+    $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+    $("div.bhoechie-tab>div.bhoechie-tab-content")
+      .eq(index)
+      .addClass("active");
   });
-  // Do not allow user to enter anything but a letter in the text-field
-  $(document).ready(function() {
-      $(input).keypress(function(key) {
-          if(key.charCode > 65 || key.charCode < 90 && key.charCode > 97 || key.charCode < 122 && key.charCode == 32){ return true;
-          } else {return false;
-          }
-      });
-  });
-  $(document).ready(function() {
-    $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
-        e.preventDefault();
-        $(this).siblings('a.active').removeClass("active");
-        $(this).addClass("active");
-        var index = $(this).index();
-        $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
-        $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
-    });
 });
 /*** Code for POSTS in DASHBOARD ***/
 // Get references to page elements
@@ -376,9 +409,7 @@ var handleFormSubmitPosts = function(posts) {
     postTitle: $postTitle.val().trim(),
     postBody: $postBody.val().trim()
   };
-  if (
-    !(postList.postTitle && postList.postBody)
-  ) {
+  if (!(postList.postTitle && postList.postBody)) {
     alert("You must enter a title and message. Thank you.");
     return;
   }
@@ -416,5 +447,3 @@ window.onclick = function(post) {
     postModal.style.display = "none";
   }
 };
-
-

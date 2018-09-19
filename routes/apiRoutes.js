@@ -81,6 +81,4 @@ module.exports = function(app) {
       res.json(dbPosts);
     });
   });
-
-
 };
