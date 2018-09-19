@@ -74,9 +74,12 @@
     width:100%;
   }
   
+#myNavbar{
+  padding: 2px;
+}
 
   #logo{
-      width: 200px;
+      width: 300px;
   }
 
 /*  bhoechie tab */

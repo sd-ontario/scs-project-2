@@ -152,6 +152,10 @@ var refreshEvents = function() {
     $eventsList.append($events);
   });
 };
+
+
+refreshEvents();
+
 // handleFormSubmit is called whenever we submit a new example
 // Save the new example to the db and refresh the list
 var handleFormSubmitEvents = function(event) {
@@ -381,6 +385,10 @@ var API3 = {
     });
   }
 };
+
+
+
+
 // refreshPosts gets new posts from the db and repopulates the list
 var refreshPosts = function() {
   API3.getPosts().then(function(data) {
@@ -403,6 +411,8 @@ var refreshPosts = function() {
     $postList.append($posts);
   });
 };
+refreshPosts();
+
 var handleFormSubmitPosts = function(posts) {
   posts.preventDefault();
   var postList = {

@@ -43,4 +43,6 @@ Object.keys(db).forEach(function(modelName) {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+//db.users.hasOne(db.posts, {foreignKey: 'id', sourceKey: 'postalcode'});
+
 module.exports = db;
