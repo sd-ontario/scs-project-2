@@ -48,6 +48,23 @@ module.exports = function(app) {
       res.json(dbEvents);
     });
   });
+
+
+  // Get Events wrt postal code - can be used after user sign in functionality is up
+/*
+app.get("/api/Events", function (req, res) {
+  db.Events.findAll({
+    where:
+    {
+      postalcode: "L4E5B3" //hardcoded - need to get postal code from user session from passport.js
+    }
+  }).then(function (dbEvents) {
+    res.json(dbEvents);
+   // console.log(dbEvents);
+  });
+
+});
+*/
   // Create a new Event
   app.post("/api/Events", function(req, res) {
     db.Events.create(req.body).then(function(dbEvents) {
@@ -70,6 +87,7 @@ module.exports = function(app) {
     });
   });
 
+
   app.get("/api/Post", function(req, res) {
     var query = {};
 
@@ -84,6 +102,25 @@ module.exports = function(app) {
       console.log(dbPost.postalcode);
     });
   });
+
+  
+
+// Get posts wrt postal code - can be used after user sign in functionality is up
+/*
+app.get("/api/Posts", function (req, res) {
+  db.Posts.findAll({
+    where:
+    {
+      postalcode: "L4E5B3" //hardcoded - need to get postal code from user session from passport.js
+    }
+  }).then(function (dbPosts) {
+    res.json(dbPosts);
+   // console.log(dbPosts);
+  });
+
+});
+*/
+
 
   // Create a new Event
   app.post("/api/Posts", function(req, res) {
