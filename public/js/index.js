@@ -5,13 +5,13 @@ var $submitBtn = $("#submit");
 var $exampleList = $("#example-list");
 var eventStore = [];
 var locationStore = [];
-var strictBounds;
 var markerLat;
 var markerLng;
 var eventLocation;
-var address;
-// var lat;
-// var long;
+var addressE = [];
+var input = document.getElementById("event-location");
+let lat = 0;
+let long = 0;
 // The API object contains methods for each kind of request we'll make
 var API = {
   saveExample: function(example) {
@@ -243,8 +243,6 @@ function initialize() {
 }
 function myMap() {
   var geocoder = new google.maps.Geocoder();
-  let lat = 0;
-  let long = 0;
   geocoder.geocode({ address: "L4E5B3" }, function(results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
       lat = results[0].geometry.location.lat();
@@ -254,8 +252,7 @@ function myMap() {
   var mapOptions = { center: myCenter, zoom: 18 };
   var map = new google.maps.Map(mapCanvas, mapOptions);
   $submitEvt.on("click", function() {
-    getLatitudeLongitude(showResult, address);
-    eventLocation = { lat: Number(markerLat), lng: Number(markerLng) };
+    getLatitudeLongitude(showResult, addressE);
     placeMarker(map, eventLocation);
   });
   map.setOptions({
@@ -264,7 +261,7 @@ function myMap() {
     disableDoubleClickZoom: true
   });
   console.log(map);
-  var minZoomLevel = 5;
+  var minZoomLevel = 18;
   google.maps.event.addListener(map, "zoom_changed", function() {
     if (map.getZoom() < minZoomLevel) {
       map.setZoom(minZoomLevel);
@@ -278,37 +275,33 @@ function showResult(result) {
   console.log(markerLat);
   markerLng = result.geometry.location.lng();
   console.log(markerLng);
+  eventLocation = { lat: Number(markerLat), lng: Number(markerLng) };
 }
-function getLatitudeLongitude(callback, address) {
-  // If address is not supplied, use default value 'Ferrol, Galicia, Spain'
-  address = this.locationStore;
-  console.log(address);
+function getLatitudeLongitude(callback, addressE) {
+ 
+  addressE = this.locationStore;
   // Initialize the Geocoder
   geocoder = new google.maps.Geocoder();
   if (geocoder) {
-    geocoder.geocode(
-      {
-        address: address
-      },
-      function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-          callback(results[0]);
-        }
-      }
-    );
+      geocoder.geocode({
+          'address': addressE
+      }, function (results, status) {
+          if (status === google.maps.GeocoderStatus.OK) {
+              callback(results[0]);
+          }
+      });
   }
-}
-function placeMarker(map, location) {
+};
+function placeMarker(map, eventlocation) {
   var marker = new google.maps.Marker({
-    position: location,
+    position: eventlocation,
     map: map
   });
   var infowindow = new google.maps.InfoWindow({
     content: this.eventStore
   });
-  infowindow.open(map, marker);
-}
-var input = document.getElementById("event-location");
+  infowindow.open(map,marker);
+};
 function initAutocomplete() {
   // Create the autocomplete object, restricting the search to geographical cities
   //When a user selects a city, populate the search bar with that result
@@ -318,28 +311,7 @@ function initAutocomplete() {
     
   );
 }
-// Allow user to submit when pressing enter
-// input.addEventListener("keyup", function(event) {
-//   console.log(autocomplete);
-//   event.preventDefault();
-//   if (event.keyCode === 13) {
-//     document.getElementById("submit-event").click();
-//   }
-// });
-// Do not allow user to enter anything but a letter in the text-field
-// $(document).ready(function() {
-//   $(input).keypress(function(key) {
-//     if (
-//       key.charCode > 65 ||
-//       (key.charCode < 90 && key.charCode > 97) ||
-//       (key.charCode < 122 && key.charCode == 32)
-//     ) {
-//       return true;
-//     } else {
-//       return false;
-//     }
-//   });
-// });
+
 $(document).ready(function() {
   $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
     e.preventDefault();

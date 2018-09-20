@@ -1,5 +1,6 @@
 module.exports = function(sequelize, DataTypes) {
   var Events = sequelize.define("Events", {
+    User_ID: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
     eventName: DataTypes.STRING,
     eventDescription: DataTypes.STRING,
     eventType: DataTypes.STRING,

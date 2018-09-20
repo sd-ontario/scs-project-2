@@ -1,23 +1,23 @@
 var db = require("../models");
 
-module.exports = function (app) {
+module.exports = function(app) {
   // Get all examples
-  app.get("/api/examples", function (req, res) {
-    db.Example.findAll({}).then(function (dbExamples) {
+  app.get("/api/examples", function(req, res) {
+    db.Example.findAll({}).then(function(dbExamples) {
       res.json(dbExamples);
     });
   });
 
   // Create a new example
-  app.post("/api/examples", function (req, res) {
-    db.Example.create(req.body).then(function (dbExamples) {
+  app.post("/api/examples", function(req, res) {
+    db.Example.create(req.body).then(function(dbExamples) {
       res.json(dbExamples);
     });
   });
 
   // Delete an example by id
-  app.delete("/api/examples/:id", function (req, res) {
-    db.Example.destroy({ where: { id: req.params.id } }).then(function (
+  app.delete("/api/examples/:id", function(req, res) {
+    db.Example.destroy({ where: { id: req.params.id } }).then(function(
       dbExamples
     ) {
       res.json(dbExamples);
@@ -43,8 +43,8 @@ module.exports = function (app) {
   // });
 
   //Get all Events
-  app.get("/api/Events", function (req, res) {
-    db.Events.findAll({}).then(function (dbEvents) {
+  app.get("/api/Events", function(req, res) {
+    db.Events.findAll({}).then(function(dbEvents) {
       res.json(dbEvents);
     });
   });
@@ -66,14 +66,14 @@ app.get("/api/Events", function (req, res) {
 });
 */
   // Create a new Event
-  app.post("/api/Events", function (req, res) {
-    db.Events.create(req.body).then(function (dbEvents) {
+  app.post("/api/Events", function(req, res) {
+    db.Events.create(req.body).then(function(dbEvents) {
       res.json(dbEvents);
     });
   });
   // Delete an Event by id
-  app.delete("/api/Events/:id", function (req, res) {
-    db.Events.destroy({ where: { id: req.params.id } }).then(function (
+  app.delete("/api/Events/:id", function(req, res) {
+    db.Events.destroy({ where: { id: req.params.id } }).then(function(
       dbEvents
     ) {
       res.json(dbEvents);
@@ -81,11 +81,28 @@ app.get("/api/Events", function (req, res) {
   });
 
   //Get all Posts
-  app.get("/api/Posts", function (req, res) {
-    db.Posts.findAll({}).then(function (dbPosts) {
+  app.get("/api/Posts", function(req, res) {
+    db.Posts.findAll({}).then(function(dbPosts) {
       res.json(dbPosts);
     });
   });
+
+
+  app.get("/api/Post", function(req, res) {
+    var query = {};
+
+    // Here we add an "include" property to our options in our findAll query
+    // We set the value to an array of the models we want to include in a left outer join
+    // In this case, just db.Author
+    db.User.findOne({
+      where: {
+        id: 1
+      }
+    }).then(function(dbPost) {
+      console.log(dbPost.postalcode);
+    });
+  });
+
   
 
 // Get posts wrt postal code - can be used after user sign in functionality is up
@@ -106,14 +123,14 @@ app.get("/api/Posts", function (req, res) {
 
 
   // Create a new Event
-  app.post("/api/Posts", function (req, res) {
-    db.Posts.create(req.body).then(function (dbPosts) {
+  app.post("/api/Posts", function(req, res) {
+    db.Posts.create(req.body).then(function(dbPosts) {
       res.json(dbPosts);
     });
   });
   // Delete an Event by id
-  app.delete("/api/Posts/:id", function (req, res) {
-    db.Posts.destroy({ where: { id: req.params.id } }).then(function (dbPosts) {
+  app.delete("/api/Posts/:id", function(req, res) {
+    db.Posts.destroy({ where: { id: req.params.id } }).then(function(dbPosts) {
       res.json(dbPosts);
     });
   });
